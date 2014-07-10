@@ -25,6 +25,8 @@
                 Price: {type: Number}
 
             });
+            bookSchema.add({book_id:[Number]});
+            userSchema.add({user_id:[Number]});
 
             var userModel = db.model('User', userSchema);
             var adminModel = db.model('Admin', adminSchema);
@@ -83,12 +85,12 @@
             }*/
 
 
-
+//user Methods
     var getUserList = (function() {
         return function getUserList(callback) {
             userModel.find({}).exec(function (err, data) {
                 if (err) {
-                    console.log("Error occurred while fetching the record: " + err);
+                    console.log("Error occurred while fetching the user record: " + err);
                 }
                 else{
                     callback(data);
@@ -101,7 +103,7 @@
         return function getUser(id,callback){
             userModel.findOne({user_id:id}).exec(function(err,data){
                 if(err)
-                console.log("Error occurred while fetching the record :"+err);
+                console.log("Error occurred while fetching the user record :"+err);
                 else{
                     callback(data);
                 }
@@ -110,10 +112,10 @@
     })();
 
     var postUser = (function(){
-        //var array = [];
+
         return function putUser(userid,name,age,city,callback){
 
-          // array.push(function(){
+
 
                var user = new userModel({
                    user_id: userid,
@@ -130,20 +132,14 @@
                        console.log("User Record Saved Successfully ");
                    }
                });
-           //});
 
-            //array.push(function(){
                 userModel.find({}).exec(function(err,data){
                 if(err)
-                console.log("Error occurred while adding the record :"+err);
+                console.log("Error occurred while adding the user record :"+err);
                 else
-                callback("Record successfully added using post request");
+                callback("User Record successfully added using post request");
             });
-        //});
-//            async.series(array,function(err,data){
-//                if(err)
-//                console.log("Error inside async.series :"+err);
-//            });
+
         }
     })();
 
@@ -151,27 +147,208 @@
         return function deleteUser(id,callback){
             userModel.remove({user_id:id}).exec(function(err){
                 if(err)
-                console.log("Error while deleting using delete request:"+err);
+                console.log("Error while deleting user using delete request:"+err);
                 else
-                callback("Record deleted successfully using delete request ");
+                callback("User Record deleted successfully using delete request ");
             });
         }
     })();
 
     var putUser = (function(){
-        return function putUser(id,name,age,city,callback){
-            userModel.update({user_id:id},{$set:{Name:name,Age:age,City:city}}).exec(function(err,result){
+        return function putUser(id,reqbody,callback){
+            userModel.update({user_id:id},{$set:reqbody}).exec(function(err,result){
                 if(err){
-                    console.log("Error occurred while updating the record: "+err);
+                    console.log("Error occurred while updating the user record: "+err);
                 }else{
-                   callback("Record updated: "+result);
+                   callback("User Record updated: "+result);
                 }
             });
         }
     })();
+
+
+
+//Admin Methods
+    var getAdminList = (function() {
+        return function getAdminList(callback) {
+           adminModel.find({}).exec(function (err, data) {
+                if (err) {
+                    console.log("Error occurred while fetching the admin record: " + err);
+                }
+                else{
+                    callback(data);
+                }
+            });
+        }
+    })();
+
+    var getAdmin = (function(){
+        return function getAdmin(id,callback){
+           adminModel.findOne({admin_id:id}).exec(function(err,data){
+                if(err)
+                    console.log("Error occurred while fetching the admin record :"+err);
+                else{
+                    callback(data);
+                }
+            });
+        }
+    })();
+
+    var postAdmin = (function(){
+
+        return function postAdmin(adminid,name,age,city,callback){
+
+
+            var admin = new adminModel({
+                admin_id: adminid,
+                Name: name,
+                Age: age,
+                City: city
+            });
+
+            admin.save(function (err) {
+                if (err) {
+                    console.log("Error occurred while saving the admin record: " + err);
+                }
+                else{
+                    console.log("Admin Record Saved Successfully ");
+                }
+            });
+
+
+
+            adminModel.find({}).exec(function(err,data){
+                if(err)
+                    console.log("Error occurred while adding the admin record :"+err);
+                else
+                    callback("Admin Record successfully added using post request");
+            });
+
+        }
+    })();
+
+    var deleteAdmin = (function(){
+        return function deleteAdmin(id,callback){
+            adminModel.remove({admin_id:id}).exec(function(err){
+                if(err)
+                    console.log("Error while deleting admin using delete request:"+err);
+                else
+                    callback("Admin Record deleted successfully using delete request ");
+            });
+        }
+    })();
+
+    var putAdmin = (function(){
+        return function putAdmin(id,reqbody,callback){
+            adminModel.update({admin_id:id},{$set:reqbody}).exec(function(err,result){
+                if(err){
+                    console.log("Error occurred while updating the Admin record: "+err);
+                }else{
+                    callback("Admin Record updated: "+result);
+                }
+            });
+        }
+    })();
+
+
+    //Book Methods
+    var getBookList = (function() {
+        return function getBookList(callback) {
+            bookModel.find({}).exec(function (err, data) {
+                if (err) {
+                    console.log("Error occurred while fetching the book record: " + err);
+                }
+                else{
+                    callback(data);
+                }
+            });
+        }
+    })();
+
+    var getBook = (function(){
+        return function getBook(id,callback){
+            bookModel.findOne({book_id:id}).exec(function(err,data){
+                if(err)
+                    console.log("Error occurred while fetching the book record :"+err);
+                else{
+                    callback(data);
+                }
+            });
+        }
+    })();
+
+    var postBook = (function(){
+
+        return function postBook(bookid,title,author,price,callback){
+
+
+            var book = new bookModel({
+                book_id: bookid,
+                Title: title,
+                Author: author,
+                Price: price
+            });
+
+            book.save(function (err) {
+                if (err) {
+                    console.log("Error occurred while saving the book record: " + err);
+                }
+                else{
+                    console.log("Book Record Saved Successfully ");
+                }
+            });
+
+
+
+            bookModel.find({}).exec(function(err,data){
+                if(err)
+                    console.log("Error occurred while adding the book record :"+err);
+                else
+                    callback("Book Record successfully added using post request");
+            });
+
+        }
+    })();
+
+    var deleteBook = (function(){
+        return function deleteBook(id,callback){
+            bookModel.remove({book_id:id}).exec(function(err){
+                if(err)
+                    console.log("Error while deleting book using delete request:"+err);
+                else
+                    callback("Book Record deleted successfully using delete request ");
+            });
+        }
+    })();
+
+    var putBook = (function(){
+        return function putBook(id,reqbody,callback){
+            bookModel.update({book_id:id},{$set:reqbody}).exec(function(err,result){
+                if(err){
+                    console.log("Error occurred while updating the Book record: "+err);
+                }else{
+                    callback("Book Record updated: "+result);
+                }
+            });
+        }
+    })();
+
+
 
     module.exports.getUserList = getUserList;
     module.exports.getUser = getUser;
     module.exports.postUser = postUser;
     module.exports.deleteUser = deleteUser;
     module.exports.putUser = putUser;
+
+    module.exports.getAdminList = getAdminList;
+    module.exports.getAdmin = getAdmin;
+    module.exports.postAdmin = postAdmin;
+    module.exports.deleteAdmin = deleteAdmin;
+    module.exports.putAdmin = putAdmin;
+
+    module.exports.getBookList = getBookList;
+    module.exports.getBook = getBook;
+    module.exports.postBook = postBook;
+    module.exports.deleteBook = deleteBook;
+    module.exports.putBook = putBook;
