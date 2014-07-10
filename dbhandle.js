@@ -159,8 +159,8 @@
     })();
 
     var putUser = (function(){
-        return function putUser(id,newid,name,age,city,callback){
-            userModel.update({user_id:id},{user_id:newid,Name:name,Age:age,City:city}).exec(function(err,result){
+        return function putUser(id,name,age,city,callback){
+            userModel.update({user_id:id},{$set:{Name:name,Age:age,City:city}}).exec(function(err,result){
                 if(err){
                     console.log("Error occurred while updating the record: "+err);
                 }else{
